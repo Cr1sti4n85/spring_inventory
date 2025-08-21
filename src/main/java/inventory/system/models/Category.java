@@ -20,7 +20,7 @@ public class Category {
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank(message = "Name is required")
+    @NotBlank(message = "El nombre es obligatorio")
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)

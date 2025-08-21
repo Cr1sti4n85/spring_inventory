@@ -18,15 +18,15 @@ public class Supplier {
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank(message = "Name is required")
+    @NotBlank(message = "El nombre es obligatorio")
     private String name;
 
     @Column(nullable = false)
-    @NotBlank(message = "Email is required")
+    @NotBlank(message = "El correo de contacto es obligatorio")
     private String email;
 
     @Column(nullable = false)
-    @NotBlank(message = "Address number is required")
+    @NotBlank(message = "La dirección es obligatoria")
     private String address;
 
 

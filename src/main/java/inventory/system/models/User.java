@@ -22,19 +22,19 @@ public class User {
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank(message = "Name is required")
+    @NotBlank(message = "El nombre es obligatorio")
     private String name;
 
     @Column(nullable = false, unique = true)
-    @NotBlank(message = "Email is required")
+    @NotBlank(message = "El correo es obligatorio")
     private String email;
 
     @Column(nullable = false)
-    @NotBlank(message = "Password is required")
+    @NotBlank(message = "El password es obligatorio")
     private String password;
 
     @Column(nullable = false)
-    @NotBlank(message = "Phone number is required")
+    @NotBlank(message = "El teléfono es obligatorio")
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
