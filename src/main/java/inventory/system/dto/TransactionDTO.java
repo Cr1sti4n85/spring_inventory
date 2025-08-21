@@ -31,6 +31,8 @@ public class TransactionDTO {
 
     private String description;
 
+    private String note;
+
     private BigDecimal totalPrice;
 
     private LocalDateTime createdAt;

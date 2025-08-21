@@ -38,6 +38,8 @@ public class Transaction {
 
     private String description;
 
+    private String note;
+
     @Column(nullable = false)
     private BigDecimal totalPrice;
 
