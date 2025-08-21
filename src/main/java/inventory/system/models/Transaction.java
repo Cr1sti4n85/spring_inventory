@@ -42,7 +42,7 @@ public class Transaction {
     private BigDecimal totalPrice;
 
 
-    private final LocalDateTime createAt = LocalDateTime.now();
+    private final LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime updatedAt;
 
@@ -66,7 +66,7 @@ public class Transaction {
                 ", type=" + type +
                 ", status=" + status +
                 ", totalPrice=" + totalPrice +
-                ", createAt=" + createAt +
+                ", createAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
     }
