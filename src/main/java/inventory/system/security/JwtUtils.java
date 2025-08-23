@@ -21,7 +21,7 @@ public class JwtUtils {
     private static final long EXPIRATION_TIME_IN_MILLISEC = 1000L * 60L * 60L * 24L * 30L; //expires in 1 month
     private SecretKey key;
 
-    @Value("${jwt.secret}")
+    @Value("${spring.jwt.secret}")
     private String secretJwtString;
 
 
