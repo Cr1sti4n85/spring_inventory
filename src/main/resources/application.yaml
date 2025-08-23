@@ -2,7 +2,7 @@ spring:
   application:
     name: inventory_system
   datasource:
-    url: jdbc:mysql://localhost:3306/ims_db?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/${DB_NAME}?createDatabaseIfNotExist=true
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -10,6 +10,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+  jwt:
+    secret: ${JWT_SECRET}
 
   servlet:
     multipart:
