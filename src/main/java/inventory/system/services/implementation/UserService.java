@@ -15,8 +15,14 @@ import inventory.system.services.IUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -59,32 +65,61 @@ public class UserService implements IUserService {
                 .orElseThrow(() -> new NotFoundException("Email Not Found"));
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new InvalidCredentialsException("Password Does Not Match");
+            throw new InvalidCredentialsException("Las contraseñas no clinciden");
         }
         String token = jwtUtils.generateToken(user.getEmail());
 
         return Response.builder()
                 .status(200)
-                .message("User Logged in Successfully")
+                .message("Has iniciado sesión correctamente")
                 .role(user.getRole())
                 .token(token)
-                .expirationTime("6 months")
+                .expirationTime("1 month")
                 .build();
     }
 
     @Override
     public Response getAllUsers() {
-        return null;
+        List<User> users = userRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+
+        users.forEach(user -> user.setTransactions(null));
+
+        List<UserDTO> userDTOS = modelMapper.map(users, new TypeToken<List<UserDTO>>() {
+        }.getType());
+
+        return Response.builder()
+                .status(200)
+                .message("success")
+                .users(userDTOS)
+                .build();
     }
 
     @Override
     public User getCurrentLoggedInUser() {
-        return null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+
+        user.setTransactions(null);
+
+        return user;
     }
 
     @Override
     public Response getUserById(Long id) {
-        return null;
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+
+        userDTO.setTransactions(null);
+
+        return Response.builder()
+                .status(200)
+                .message("success")
+                .user(userDTO)
+                .build();
     }
 
     @Override
