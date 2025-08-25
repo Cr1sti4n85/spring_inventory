@@ -124,17 +124,53 @@ public class UserService implements IUserService {
 
     @Override
     public Response updateUser(Long id, UserDTO userDTO) {
-        return null;
+        User existingUser = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+
+        if (userDTO.getEmail() != null) existingUser.setEmail(userDTO.getEmail());
+        if (userDTO.getPhoneNumber() != null) existingUser.setPhoneNumber(userDTO.getPhoneNumber());
+        if (userDTO.getName() != null) existingUser.setName(userDTO.getName());
+        if (userDTO.getRole() != null) existingUser.setRole(userDTO.getRole());
+
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+            existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
+        userRepository.save(existingUser);
+
+        return Response.builder()
+                .status(200)
+                .message("Usuario actualizado correctamente")
+                .build();
     }
 
     @Override
     public Response deleteUser(Long id) {
-        return null;
+        userRepository.findById(id).orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+
+        userRepository.deleteById(id);
+
+        return Response.builder()
+                .status(200)
+                .message("Usuario eliminado correctamente")
+                .build();
     }
 
     @Override
     public Response getUserTransactions(Long id) {
-        return null;
-    }
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
 
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+
+        userDTO.getTransactions().forEach(transactionDTO -> {
+            transactionDTO.setUser(null);
+            transactionDTO.setSupplier(null);
+        });
+
+        return Response.builder()
+                .status(200)
+                .message("success")
+                .user(userDTO)
+                .build();
+    }
 }
+
+

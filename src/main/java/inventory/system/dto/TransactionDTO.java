@@ -39,12 +39,10 @@ public class TransactionDTO {
 
     private LocalDateTime updatedAt;
 
-    private Long userId;
+    private ProductDTO product;
 
-    private Long productId;
+    private UserDTO user;
 
-    private Long supplierId;
-
-
+    private SupplierDTO supplier;
 
 }
