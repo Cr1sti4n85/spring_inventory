@@ -20,17 +20,13 @@ public class UserDTO {
 
     private Long id;
 
-    @NotBlank(message = "El nombre es obligatorio")
     private String name;
 
-    @NotBlank(message = "El correo es obligatorio")
     private String email;
 
-    @NotBlank(message = "El password es obligatorio")
     @JsonIgnore
     private String password;
 
-    @NotBlank(message = "El teléfono es obligatorio")
     private String phoneNumber;
 
     private UserRole role;

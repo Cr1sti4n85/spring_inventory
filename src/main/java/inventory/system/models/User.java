@@ -43,8 +43,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Transaction> transactions;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "created_at")
+    private final LocalDateTime createdAt = LocalDateTime.now();
 
     @Override
     public String toString() {

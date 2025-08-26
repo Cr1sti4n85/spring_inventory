@@ -38,7 +38,7 @@ public class UserService implements IUserService {
     public Response registerUser(SignupRequest signupRequest) {
 
         UserRole role = UserRole.MANAGER;
-
+        System.out.println(signupRequest.getRole());
         if (signupRequest.getRole() != null) {
             role = signupRequest.getRole();
         }
@@ -65,7 +65,7 @@ public class UserService implements IUserService {
                 .orElseThrow(() -> new NotFoundException("Email Not Found"));
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new InvalidCredentialsException("Las contraseñas no clinciden");
+            throw new InvalidCredentialsException("Las credenciales no coinciden");
         }
         String token = jwtUtils.generateToken(user.getEmail());
 
