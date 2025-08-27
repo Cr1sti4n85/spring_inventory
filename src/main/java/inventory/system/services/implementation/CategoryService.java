@@ -33,7 +33,7 @@ public class CategoryService implements ICategoryService {
 
         return Response.builder()
                 .status(200)
-                .message("Category Saved Successfully")
+                .message("Categoría guardada correctamente")
                 .build();
 
     }
@@ -58,7 +58,7 @@ public class CategoryService implements ICategoryService {
     public Response getCategoryById(Long id) {
 
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Category Not Found"));
+                .orElseThrow(() -> new NotFoundException("Categoría no encontrada"));
 
         CategoryDTO categoryDTO = modelMapper.map(category, CategoryDTO.class);
 
@@ -73,7 +73,7 @@ public class CategoryService implements ICategoryService {
     public Response updateCategory(Long id, CategoryDTO categoryDTO) {
 
         Category existingCategory = categoryRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Category Not Found"));
+                .orElseThrow(() -> new NotFoundException("Categoría no encontrada"));
 
         existingCategory.setName(categoryDTO.getName());
 
@@ -81,7 +81,7 @@ public class CategoryService implements ICategoryService {
 
         return Response.builder()
                 .status(200)
-                .message("Category Was Successfully Updated")
+                .message("La categoría se ha actualizado correctamente")
                 .build();
 
     }
@@ -90,13 +90,13 @@ public class CategoryService implements ICategoryService {
     public Response deleteCategory(Long id) {
 
         categoryRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Category Not Found"));
+                .orElseThrow(() -> new NotFoundException("Categoría no encontrda"));
 
         categoryRepository.deleteById(id);
 
         return Response.builder()
                 .status(200)
-                .message("Category Was Successfully Deleted")
+                .message("La categoría ha sido eliminada correctamente")
                 .build();
     }
 }
