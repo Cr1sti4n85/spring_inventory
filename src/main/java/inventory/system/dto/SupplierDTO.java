@@ -8,9 +8,10 @@ import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@Setter
 public class SupplierDTO {
 
     private Long id;
