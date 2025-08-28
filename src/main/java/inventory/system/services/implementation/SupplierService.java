@@ -33,7 +33,7 @@ public class SupplierService implements ISupplierService {
 
         return Response.builder()
                 .status(200)
-                .message("Supplier Saved Successfully")
+                .message("Registro creado correctamente")
                 .build();
     }
 
@@ -74,7 +74,7 @@ public class SupplierService implements ISupplierService {
     public Response getSupplierById(Long id) {
 
         Supplier supplier = supplierRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Supplier Not Found"));
+                .orElseThrow(() -> new NotFoundException("Proveedor no encontrado"));
 
         SupplierDTO supplierDTO = modelMapper.map(supplier, SupplierDTO.class);
 
@@ -89,13 +89,13 @@ public class SupplierService implements ISupplierService {
     public Response deleteSupplier(Long id) {
 
         supplierRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Supplier Not Found"));
+                .orElseThrow(() -> new NotFoundException("Proveedor no encontrado"));
 
         supplierRepository.deleteById(id);
 
         return Response.builder()
                 .status(200)
-                .message("Supplier Was Successfully Deleted")
+                .message("Eliminado correctamente")
                 .build();
     }
 }
