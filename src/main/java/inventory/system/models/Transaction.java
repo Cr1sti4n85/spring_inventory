@@ -4,6 +4,8 @@ import inventory.system.enums.TransactionStatus;
 import inventory.system.enums.TransactionType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -23,17 +25,17 @@ public class Transaction {
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank(message = "El campo es obligatorio")
+    @Positive(message = "La cantidad debe ser mayor a cero")
     private Integer totalProducts;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @NotBlank(message = "El tipo de transacción es obligatorio")
+    @NotNull(message = "El tipo de transacción es obligatorio")
     private TransactionType type;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @NotBlank(message = "El estado de la transacción es obligatorio")
+    @NotNull(message = "El estado de la transacción es obligatorio")
     private TransactionStatus status;
 
     private String description;

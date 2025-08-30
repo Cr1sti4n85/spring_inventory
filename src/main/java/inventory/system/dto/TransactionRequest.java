@@ -19,10 +19,10 @@ import java.time.LocalDateTime;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TransactionRequest {
 
-    @Positive(message = "product id is required")
+    @Positive(message = "El id del producto es obligatorio")
     private Long productId;
 
-    @Positive(message = "quantity id is required")
+    @Positive(message = "La cantidad es obligatoria")
     private Integer quantity;
 
     private Long supplierId;
