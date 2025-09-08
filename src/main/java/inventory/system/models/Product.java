@@ -45,7 +45,7 @@ public class Product {
     private LocalDateTime expiryDate;
 
     @Column
-    private String imageUrl;
+    private String imageName;
 
     @Column
     private final LocalDateTime createdAt = LocalDateTime.now();
@@ -65,7 +65,7 @@ public class Product {
                 ", stock=" + stock +
                 ", description='" + description + '\'' +
                 ", expiryDate=" + expiryDate +
-                ", imageUrl='" + imageUrl + '\'' +
+                ", imageUrl='" + imageName + '\'' +
                 ", createdAt=" + createdAt +
                 '}';
     }

@@ -26,7 +26,7 @@ public class ProductDTO {
     private BigDecimal price;
     private Integer stock;
     private String description;
-    private String imageUrl;
+    private String imageName;
     private LocalDateTime expiryDate;
     private LocalDateTime createdAt;
 

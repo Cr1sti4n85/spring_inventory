@@ -17,12 +17,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +32,7 @@ public class ProductService implements IProductService {
 
     private final ImageService imageService;
     private final StorageConfig config;
-    private static final String IMAGE_DIRECTORY = "D:\\JAVA_WORKSPACE\\SPRING-REACT\\inventory_system_front\\public\\imgs\\";
+//    private static final String IMAGE_DIRECTORY = "D:\\JAVA_WORKSPACE\\SPRING-REACT\\inventory_system_front\\public\\imgs\\";
 
 
     @Override
@@ -58,7 +55,7 @@ public class ProductService implements IProductService {
 
             String filename = imageService.save(imageFile);
 
-            productToSave.setImageUrl(filename);
+            productToSave.setImageName(filename);
         }
 
         //save the product entity
@@ -82,7 +79,7 @@ public class ProductService implements IProductService {
             String imagePath = imageService.save(imageFile);
 
             System.out.println("La URL de la imagen es: " + imagePath);
-            existingProduct.setImageUrl(imagePath);
+            existingProduct.setImageName(imagePath);
         }
 
         //check if category is to be chanegd for the products
