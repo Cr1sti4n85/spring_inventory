@@ -1,5 +1,6 @@
 package inventory.system.services.implementation;
 
+import inventory.system.config.StorageConfig;
 import inventory.system.dto.ProductDTO;
 import inventory.system.dto.Response;
 import inventory.system.exceptions.NotFoundException;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
@@ -31,11 +33,13 @@ public class ProductService implements IProductService {
     private final ModelMapper modelMapper;
     private final CategoryRepository categoryRepository;
 
-    private static final String IMAGE_DIRECTORY = System.getProperty("user.dir") + "/product-images/";
+    private final ImageService imageService;
+    private final StorageConfig config;
+    private static final String IMAGE_DIRECTORY = "D:\\JAVA_WORKSPACE\\SPRING-REACT\\inventory_system_front\\public\\imgs\\";
 
 
     @Override
-    public Response saveProduct(ProductDTO productDTO, MultipartFile imageFile) {
+    public Response saveProduct(ProductDTO productDTO, MultipartFile imageFile) throws IOException {
 
         Category category = categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(() -> new NotFoundException("Categoría no encontrada"));
@@ -51,11 +55,10 @@ public class ProductService implements IProductService {
                 .build();
 
         if (imageFile != null && !imageFile.isEmpty()) {
-            log.info("La imagen ya existe");
-            String imagePath = saveImage(imageFile);
 
-            System.out.println("La URL de la imagen es: " + imagePath);
-            productToSave.setImageUrl(imagePath);
+            String filename = imageService.save(imageFile);
+
+            productToSave.setImageUrl(filename);
         }
 
         //save the product entity
@@ -68,7 +71,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Response updateProduct(ProductDTO productDTO, MultipartFile imageFile) {
+    public Response updateProduct(ProductDTO productDTO, MultipartFile imageFile) throws IOException {
 
         //check if product exisit
         Product existingProduct = productRepository.findById(productDTO.getProductId())
@@ -76,7 +79,7 @@ public class ProductService implements IProductService {
 
         //check if image is associated with the product to update and upload
         if (imageFile != null && !imageFile.isEmpty()) {
-            String imagePath = saveImage(imageFile);
+            String imagePath = imageService.save(imageFile);
 
             System.out.println("La URL de la imagen es: " + imagePath);
             existingProduct.setImageUrl(imagePath);
@@ -182,38 +185,5 @@ public class ProductService implements IProductService {
                 .build();
     }
 
-
-    //saving to the root of the project
-    private String saveImage(MultipartFile imageFile) {
-        //validate image and check if it is greater than 1GB
-        if (!Objects.requireNonNull(imageFile.getContentType()).startsWith("image/") || imageFile.getSize() > 1024 * 1024 * 1024) {
-            throw new IllegalArgumentException("Hay un problema con la imagen, verifica que sea menor a 1GB");
-        }
-
-        //create the directory if it doesn't exist
-        File directory = new File(IMAGE_DIRECTORY);
-
-        if (!directory.exists()) {
-            if (directory.mkdir()) {
-                log.info("Se creó el directorio");
-            } else {
-                log.warn("Hubo un error al crear el directorio");
-            }
-        }
-        //unique UUID for the image
-        String uniqueFileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
-
-        //Get the absolute path of the image
-        String imagePath = IMAGE_DIRECTORY + uniqueFileName;
-
-        try {
-            File destinationFile = new File(imagePath);
-            imageFile.transferTo(destinationFile); //we are writing the image to this folder
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Error al guardar imagen: " + e.getMessage());
-        }
-        return imagePath;
-
-    }
 
 }

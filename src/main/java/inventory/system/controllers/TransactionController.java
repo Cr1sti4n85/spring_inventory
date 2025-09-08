@@ -2,11 +2,9 @@ package inventory.system.controllers;
 
 import inventory.system.dto.Response;
 import inventory.system.dto.TransactionRequest;
-import inventory.system.enums.TransactionStatus;
 import inventory.system.services.implementation.TransactionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +35,6 @@ public class TransactionController {
             @RequestParam(defaultValue = "1000") int size,
             @RequestParam(required = false) String filter) {
 
-        System.out.println("SEARCH VALUE IS: " +filter);
         return ResponseEntity.ok(transactionService.getAllTransactions(page, size, filter));
     }
 
@@ -58,8 +55,8 @@ public class TransactionController {
     @PutMapping("/{transactionId}")
     public ResponseEntity<Response> updateTransactionStatus(
             @PathVariable Long transactionId,
-            @RequestBody TransactionStatus status) {
+            @RequestBody TransactionRequest request) {
 
-        return ResponseEntity.ok(transactionService.updateTransactionStatus(transactionId, status));
+        return ResponseEntity.ok(transactionService.updateTransactionStatus(transactionId, request.getStatus()));
     }
 }

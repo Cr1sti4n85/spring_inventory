@@ -153,6 +153,7 @@ public class TransactionService implements ITransactionService {
                 .totalPrice(BigDecimal.ZERO)
                 .description(transactionRequest.getDescription())
                 .note(transactionRequest.getNote())
+                .supplier(supplier)
                 .build();
 
         transactionRepository.save(transaction);

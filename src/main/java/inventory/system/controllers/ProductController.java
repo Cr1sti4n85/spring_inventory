@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 
 @RestController
@@ -28,7 +29,7 @@ public class ProductController {
             @RequestParam("stock") Integer stockQuantity,
             @RequestParam("categoryId") Long categoryId,
             @RequestParam(value = "description", required = false) String description
-    ) {
+    ) throws IOException {
         ProductDTO productDTO = new ProductDTO();
         productDTO.setName(name);
         productDTO.setSku(sku);
@@ -52,7 +53,7 @@ public class ProductController {
             @RequestParam(value = "categoryId", required = false) Long categoryId,
             @RequestParam(value = "description", required = false) String description,
             @RequestParam("productId") Long productId
-    ) {
+    ) throws IOException {
         ProductDTO productDTO = new ProductDTO();
         productDTO.setName(name);
         productDTO.setSku(sku);
