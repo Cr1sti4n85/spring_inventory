@@ -1,6 +1,5 @@
 package inventory.system.controllers;
 
-
 import inventory.system.config.StorageConfig;
 import inventory.system.services.implementation.ImageService;
 import org.springframework.core.io.Resource;

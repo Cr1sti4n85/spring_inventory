@@ -3,7 +3,6 @@ package inventory.system.models;
 import inventory.system.enums.TransactionStatus;
 import inventory.system.enums.TransactionType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
@@ -44,7 +43,6 @@ public class Transaction {
 
     @Column(nullable = false)
     private BigDecimal totalPrice;
-
 
     private final LocalDateTime createdAt = LocalDateTime.now();
 

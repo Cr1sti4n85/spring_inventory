@@ -5,7 +5,6 @@ import inventory.system.dto.Response;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -22,9 +21,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     @Override
     public void commence(HttpServletRequest request,
-                         HttpServletResponse response,
-                         AuthenticationException authException) throws IOException, ServletException
-    {
+            HttpServletResponse response,
+            AuthenticationException authException) throws IOException, ServletException {
         Response errorResponse = Response.builder()
                 .status(HttpStatus.UNAUTHORIZED.value())
                 .message(authException.getMessage())

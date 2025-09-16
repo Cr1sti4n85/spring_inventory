@@ -1,6 +1,5 @@
 package inventory.system.services.implementation;
 
-import inventory.system.config.StorageConfig;
 import inventory.system.dto.ProductDTO;
 import inventory.system.dto.Response;
 import inventory.system.exceptions.NotFoundException;
@@ -31,9 +30,6 @@ public class ProductService implements IProductService {
     private final CategoryRepository categoryRepository;
 
     private final ImageService imageService;
-    private final StorageConfig config;
-//    private static final String IMAGE_DIRECTORY = "D:\\JAVA_WORKSPACE\\SPRING-REACT\\inventory_system_front\\public\\imgs\\";
-
 
     @Override
     public Response saveProduct(ProductDTO productDTO, MultipartFile imageFile) throws IOException {
@@ -41,7 +37,7 @@ public class ProductService implements IProductService {
         Category category = categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(() -> new NotFoundException("Categoría no encontrada"));
 
-        //map our dto to product entity
+        // map our dto to product entity
         Product productToSave = Product.builder()
                 .name(productDTO.getName())
                 .sku(productDTO.getSku())
@@ -58,7 +54,7 @@ public class ProductService implements IProductService {
             productToSave.setImageName(filename);
         }
 
-        //save the product entity
+        // save the product entity
         productRepository.save(productToSave);
 
         return Response.builder()
@@ -70,11 +66,11 @@ public class ProductService implements IProductService {
     @Override
     public Response updateProduct(ProductDTO productDTO, MultipartFile imageFile) throws IOException {
 
-        //check if product exisit
+        // check if product exisit
         Product existingProduct = productRepository.findById(productDTO.getProductId())
                 .orElseThrow(() -> new NotFoundException("Producto no encontrado"));
 
-        //check if image is associated with the product to update and upload
+        // check if image is associated with the product to update and upload
         if (imageFile != null && !imageFile.isEmpty()) {
             String imagePath = imageService.save(imageFile);
 
@@ -82,14 +78,14 @@ public class ProductService implements IProductService {
             existingProduct.setImageName(imagePath);
         }
 
-        //check if category is to be chanegd for the products
+        // check if category is to be chanegd for the products
         if (productDTO.getCategoryId() != null && productDTO.getCategoryId() > 0) {
             Category category = categoryRepository.findById(productDTO.getCategoryId())
                     .orElseThrow(() -> new NotFoundException("Categoría no encontrada"));
             existingProduct.setCategory(category);
         }
 
-        //check if product fields is to be changed and update
+        // check if product fields is to be changed and update
         if (productDTO.getName() != null && !productDTO.getName().isBlank()) {
             existingProduct.setName(productDTO.getName());
         }
@@ -109,15 +105,14 @@ public class ProductService implements IProductService {
         if (productDTO.getStock() != null && productDTO.getStock() >= 0) {
             existingProduct.setStock(productDTO.getStock());
         }
-        //update the product
+        // update the product
         productRepository.save(existingProduct);
 
-        //Build our response
+        // Build our response
         return Response.builder()
                 .status(200)
                 .message("Producto actualizado correctamente")
                 .build();
-
 
     }
 
@@ -127,7 +122,8 @@ public class ProductService implements IProductService {
         List<Product> productList = productRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
 
         List<ProductDTO> productDTOList = modelMapper
-                .map(productList, new TypeToken<List<ProductDTO>>() {}.getType());
+                .map(productList, new TypeToken<List<ProductDTO>>() {
+                }.getType());
 
         return Response.builder()
                 .status(200)
@@ -173,7 +169,8 @@ public class ProductService implements IProductService {
         }
 
         List<ProductDTO> productDTOList = modelMapper
-                .map(products, new TypeToken<List<ProductDTO>>() {}.getType());
+                .map(products, new TypeToken<List<ProductDTO>>() {
+                }.getType());
 
         return Response.builder()
                 .status(200)
@@ -181,6 +178,5 @@ public class ProductService implements IProductService {
                 .products(productDTOList)
                 .build();
     }
-
 
 }
