@@ -18,6 +18,8 @@ public interface IUserService {
 
     Response getUserById(Long id);
 
+    Response getUserByEmail(String email);
+
     Response updateUser(Long id, UserDTO userDTO);
 
     Response deleteUser(Long id);

@@ -66,13 +66,15 @@ public class UserService implements IUserService {
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new InvalidCredentialsException("Las credenciales no coinciden");
         }
-        String token = jwtUtils.generateToken(user.getEmail());
+        String token = jwtUtils.generateAccessToken(user.getEmail());
+        String refreshToken = jwtUtils.generateRefreshToken(user.getEmail());
 
         return Response.builder()
                 .status(200)
                 .message("Has iniciado sesión correctamente")
                 .role(user.getRole())
                 .token(token)
+                .refreshToken(refreshToken)
                 .expirationTime("1 month")
                 .build();
     }
@@ -109,6 +111,21 @@ public class UserService implements IUserService {
     @Override
     public Response getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+
+        userDTO.setTransactions(null);
+
+        return Response.builder()
+                .status(200)
+                .message("success")
+                .user(userDTO)
+                .build();
+    }
+
+    @Override
+    public Response getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
 
         UserDTO userDTO = modelMapper.map(user, UserDTO.class);
 

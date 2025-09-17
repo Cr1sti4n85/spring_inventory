@@ -1,6 +1,7 @@
 package inventory.system.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -18,12 +19,13 @@ import java.util.function.Function;
 @Slf4j
 public class JwtUtils {
 
-    private static final long EXPIRATION_TIME_IN_MILLISEC = 1000L * 60L * 60L * 24L * 30L; //expires in 1 month
+    private static final long REFRESH_EXPIRATION_TIME_IN_MILLISEC = 1000L * 60L * 60L * 24L * 30L; // expires in 1 month
+    private static final long ACCESS_EXPIRATION_TIME_IN_MILLISEC = 1000L * 60L * 5L; // expires in 5 min
+
     private SecretKey key;
 
     @Value("${spring.jwt.secret}")
     private String secretJwtString;
-
 
     @PostConstruct
     private void init() {
@@ -31,11 +33,19 @@ public class JwtUtils {
         this.key = new SecretKeySpec(keyByte, "HmacSHA256");
     }
 
-    public String generateToken(String email) {
+    public String generateAccessToken(String email) {
+        return generateToken(email, ACCESS_EXPIRATION_TIME_IN_MILLISEC);
+    }
+
+    public String generateRefreshToken(String email) {
+        return generateToken(email, REFRESH_EXPIRATION_TIME_IN_MILLISEC);
+    }
+
+    public String generateToken(String email, long tokenExpiration) {
         return Jwts.builder()
                 .subject(email)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_IN_MILLISEC))
+                .expiration(new Date(System.currentTimeMillis() + tokenExpiration))
                 .signWith(key)
                 .compact();
     }
@@ -55,5 +65,21 @@ public class JwtUtils {
 
     private boolean isTokenExpired(String token) {
         return extractClaims(token, Claims::getExpiration).before(new Date());
+    }
+
+    // refresh tojen validation
+    public boolean validateRefresh(String token) {
+        try {
+            var claims = Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+
+            return claims.getExpiration().after(new Date());
+
+        } catch (JwtException e) {
+            return false;
+        }
     }
 }

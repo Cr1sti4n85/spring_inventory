@@ -13,20 +13,21 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Response {
 
-    //generic response
+    // generic response
     private int status;
     private String message;
 
-    //login
+    // login
     private String token;
+    private String refreshToken;
     private UserRole role;
     private String expirationTime;
 
-    //pagination
+    // pagination
     private Integer totalPages;
     private Long totalElements;
 
-    //optional data
+    // optional data
     private UserDTO user;
     private List<UserDTO> users;
 
