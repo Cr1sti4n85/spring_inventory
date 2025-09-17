@@ -1,6 +1,5 @@
 package inventory.system.services.implementation;
 
-
 import inventory.system.dto.LoginRequest;
 import inventory.system.dto.Response;
 import inventory.system.dto.SignupRequest;
@@ -124,12 +123,17 @@ public class UserService implements IUserService {
 
     @Override
     public Response updateUser(Long id, UserDTO userDTO) {
-        User existingUser = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
 
-        if (userDTO.getEmail() != null) existingUser.setEmail(userDTO.getEmail());
-        if (userDTO.getPhoneNumber() != null) existingUser.setPhoneNumber(userDTO.getPhoneNumber());
-        if (userDTO.getName() != null) existingUser.setName(userDTO.getName());
-        if (userDTO.getRole() != null) existingUser.setRole(userDTO.getRole());
+        if (userDTO.getEmail() != null)
+            existingUser.setEmail(userDTO.getEmail());
+        if (userDTO.getPhoneNumber() != null)
+            existingUser.setPhoneNumber(userDTO.getPhoneNumber());
+        if (userDTO.getName() != null)
+            existingUser.setName(userDTO.getName());
+        if (userDTO.getRole() != null)
+            existingUser.setRole(userDTO.getRole());
 
         if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
             existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
@@ -172,5 +176,3 @@ public class UserService implements IUserService {
                 .build();
     }
 }
-
-
