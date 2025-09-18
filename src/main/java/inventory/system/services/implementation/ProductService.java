@@ -30,6 +30,7 @@ public class ProductService implements IProductService {
     private final CategoryRepository categoryRepository;
 
     private final ImageService imageService;
+    private final UploadService uploadService;
 
     @Override
     public Response saveProduct(ProductDTO productDTO, MultipartFile imageFile) throws IOException {
@@ -49,7 +50,8 @@ public class ProductService implements IProductService {
 
         if (imageFile != null && !imageFile.isEmpty()) {
 
-            String filename = imageService.save(imageFile);
+            // String filename = imageService.save(imageFile);
+            String filename = uploadService.uploadImage(imageFile);
 
             productToSave.setImageName(filename);
         }
