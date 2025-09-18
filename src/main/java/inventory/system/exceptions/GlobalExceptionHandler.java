@@ -2,8 +2,6 @@ package inventory.system.exceptions;
 
 import inventory.system.dto.Response;
 
-import java.nio.file.AccessDeniedException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authorization.AuthorizationDeniedException;

@@ -1,7 +1,6 @@
 package inventory.system.controllers;
 
 import inventory.system.config.StorageConfig;
-import inventory.system.services.implementation.ImageService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -19,11 +18,9 @@ import java.nio.file.Path;
 @RequestMapping("/images")
 public class ImageController {
 
-    private final ImageService imageService;
     private final StorageConfig config;
 
-    public ImageController(ImageService imageService, StorageConfig config) {
-        this.imageService = imageService;
+    public ImageController(StorageConfig config) {
         this.config = config;
     }
 
