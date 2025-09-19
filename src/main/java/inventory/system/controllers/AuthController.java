@@ -37,7 +37,7 @@ public class AuthController {
         cookie.setHttpOnly(true);
         cookie.setPath("/api/auth/refresh");
         cookie.setMaxAge(86400); // one day
-        // cookie.setSecure(true); for production env
+        cookie.setSecure(true);
         response.addCookie(cookie);
 
         return ResponseEntity.ok(Response.builder()
