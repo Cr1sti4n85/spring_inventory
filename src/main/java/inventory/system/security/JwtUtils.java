@@ -19,7 +19,7 @@ import java.util.function.Function;
 @Slf4j
 public class JwtUtils {
 
-    private static final long REFRESH_EXPIRATION_TIME_IN_MILLISEC = 1000L * 60L * 60L * 24L * 30L; // expires in 1 month
+    private static final long REFRESH_EXPIRATION_TIME_IN_MILLISEC = 1000L * 60L * 60L * 24L; // expires in 1 day
     private static final long ACCESS_EXPIRATION_TIME_IN_MILLISEC = 1000L * 60L * 5L; // expires in 5 min
 
     private SecretKey key;

@@ -8,10 +8,10 @@ import inventory.system.security.JwtUtils;
 import inventory.system.services.implementation.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,12 +33,22 @@ public class AuthController {
             HttpServletResponse response) {
         Response loginResponse = userService.loginUser(loginRequest);
         // sed refresh token to cookies
-        var cookie = new Cookie("refreshToken", loginResponse.getRefreshToken().toString());
-        cookie.setHttpOnly(true);
-        cookie.setPath("/api/auth/refresh");
-        cookie.setMaxAge(86400); // one day
-        cookie.setSecure(true);
-        response.addCookie(cookie);
+        // var cookie = new Cookie("refreshToken",
+        // loginResponse.getRefreshToken().toString());
+        // cookie.setHttpOnly(true);
+        // cookie.setPath("/api/auth/refresh");
+        // cookie.setMaxAge(86400); // one day
+        // cookie.setSecure(false);
+        // response.addCookie(cookie);
+        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", loginResponse.getRefreshToken())
+                .httpOnly(true)
+                .path("/api/auth/refresh")
+                .maxAge(86400) // 1 day
+                .sameSite("None")
+                .secure(true)
+                .build();
+
+        response.addHeader("Set-Cookie", refreshCookie.toString());
 
         return ResponseEntity.ok(Response.builder()
                 .status(200)
@@ -51,6 +61,7 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<JwtResponse> refresh(
             @CookieValue(value = "refreshToken", required = false) String refreshToken) {
+        System.out.println("VALOR DEL TOKEN REFRESH " + refreshToken);
         if (refreshToken == null || !jwtUtils.validateRefresh(refreshToken)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

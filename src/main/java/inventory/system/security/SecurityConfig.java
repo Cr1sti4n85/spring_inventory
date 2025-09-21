@@ -39,9 +39,8 @@ public class SecurityConfig {
                                                 .accessDeniedHandler(accessDeniedHandler)
                                                 .authenticationEntryPoint(authEntry))
                                 .authorizeHttpRequests(request -> request
-                                                .requestMatchers("/api/auth/**").permitAll()
+                                                .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
                                                 .requestMatchers("/images/**").permitAll()
-                                                .requestMatchers(HttpMethod.POST, "/auth/refresh").permitAll()
                                                 .anyRequest().authenticated())
                                 .sessionManagement(manager -> manager
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
