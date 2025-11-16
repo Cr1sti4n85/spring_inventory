@@ -16,7 +16,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
                         .allowCredentials(true)
                         .allowedHeaders("Origin", "Content-Type", "Accept", "Authorization")
                         .allowedOrigins("https://spring-inventory-front.vercel.app");

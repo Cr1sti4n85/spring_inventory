@@ -40,7 +40,7 @@ public class SecurityConfig {
                                                 .authenticationEntryPoint(authEntry))
                                 .authorizeHttpRequests(request -> request
                                                 .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-                                                .requestMatchers(HttpMethod.GET, "/").permitAll()
+                                                .requestMatchers("/").permitAll()
                                                 .requestMatchers("/images/**").permitAll()
                                                 .anyRequest().authenticated())
                                 .sessionManagement(manager -> manager
